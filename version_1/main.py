@@ -8,7 +8,7 @@ This script is the entry of the application Patient Management System (PMS).
 It includes the main function to run the application and also other helper functions.
 """
 
-PATIENTS_DATA = [1, 2, 3, 4]
+PATIENTS_DATA = []
 
 
 def generate_patient_id() -> int:
