@@ -72,6 +72,13 @@ def display_and_get_patient_info() -> tuple:
         print("\nExiting application...")
         exit(0)
 
+    try:
+        validate_patient_date_of_birth(date_of_birth)
+        validate_patient_phone_number(phone_number)
+    except ValueError as e:
+        print(f"\nError: {e}")
+        display_and_get_patient_info()
+
     return first_name, last_name, date_of_birth, hometown, house_number, phone_number
 
 
@@ -128,16 +135,75 @@ def display_patients() -> None:
         print("No patients found")
 
 
-def update_patient_info(patient_id: int, patient_data: dict) -> None:
-    pass
+def display_patient(patient_id: int) -> None:
+    """
+    Display a patient in the system
+
+    :param patient_id: The id of the patient to display
+
+    :return: None
+    """
+    patient = search_patient(patient_id)
+
+    if patient:
+        print(patient)
+    else:
+        print("\nPatient not found\n")
+
+
+def update_patient_info(patient: dict, **kwargs) -> None:
+    """
+    Update patient information
+
+    :param patient: The patient to update
+    :param kwargs: The new patient data
+
+    :return: The updated patient information
+    """
+    patient.update(kwargs)
+    print(f"\nPatient with ID {patient.get('patient_id')} updated successfully\n")
 
 
 def delete_patient(patient_id: int) -> None:
-    pass
+    """
+    Delete a patient from the system
+
+    :param patient_id: The id of the patient to delete
+
+    :return: None
+    """
+    patient = search_patient(patient_id)
+
+    if patient:
+        PATIENTS_DATA.remove(patient)
+        print(f"\nPatient with ID {patient_id} deleted successfully\n")
+    else:
+        print("\nPatient not found\n")
 
 
-def search_patient(patient_id: int) -> dict:
-    pass
+def search_patient(patient_id: int) -> dict | None:
+    """
+    Search for a patient in the system using binary search
+
+    :param patient_id: The id of the patient to search for
+
+    :return: The patient information if found, otherwise None
+    """
+    left = 0
+    right = len(PATIENTS_DATA) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if PATIENTS_DATA[mid].get("patient_id") == patient_id:
+            return PATIENTS_DATA[mid]
+
+        if PATIENTS_DATA[mid].get("patient_id") < patient_id:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return None
 
 
 def validate_patient_date_of_birth(date_of_birth: str) -> bool:
@@ -210,16 +276,8 @@ def main() -> None:
         user_choice = get_user_choice()
 
         if user_choice == "1":
-            while True:
-                first_name, last_name, date_of_birth, hometown, house_number, phone_number = display_and_get_patient_info()
+            first_name, last_name, date_of_birth, hometown, house_number, phone_number = display_and_get_patient_info()
 
-                try:
-                    validate_patient_date_of_birth(date_of_birth)
-                    validate_patient_phone_number(phone_number)
-                    break
-                except ValueError as e:
-                    print(f"\nError: {e}")
-                    continue
             add_patient(
                 first_name=first_name,
                 last_name=last_name,
@@ -228,14 +286,54 @@ def main() -> None:
                 house_number=house_number,
                 phone_number=phone_number
             )
+
         elif user_choice == "2":
             display_patients()
         elif user_choice == "3":
-            continue
+            display_patient_id_menu()
+
+            try:
+                patient_id = int(get_user_choice())
+            except ValueError:
+                print("\nInvalid patient ID\n")
+                patient_id = int(get_user_choice())
+
+            patient = search_patient(patient_id)
+
+            if patient:
+                first_name, last_name, date_of_birth, hometown, house_number, phone_number = display_and_get_patient_info()
+
+                update_patient_info(
+                    patient,
+                    first_name=first_name,
+                    last_name=last_name,
+                    date_of_birth=date_of_birth,
+                    hometown=hometown,
+                    house_number=house_number,
+                    phone_number=phone_number
+                )
+            else:
+                print("\nPatient not found\n")
         elif user_choice == "4":
-            continue
+            display_patient_id_menu()
+
+            try:
+                patient_id = int(get_user_choice())
+            except ValueError:
+                print("\nInvalid patient ID\n")
+                patient_id = int(get_user_choice())
+
+            delete_patient(patient_id)
         elif user_choice == "5":
-            continue
+            display_patient_id_menu()
+
+            try:
+                patient_id = int(get_user_choice())
+            except ValueError:
+                print("\nInvalid patient ID\n")
+                patient_id = int(get_user_choice())
+
+            display_patient(patient_id)
         elif user_choice == "6":
             running = False
             print("Exiting application...")
