@@ -64,7 +64,7 @@ def display_and_get_patient_info() -> tuple:
     try:
         first_name = input("First Name: ")
         last_name = input("Last Name: ")
-        date_of_birth = input("Date of Birth (dd-mm-yyyy: ")
+        date_of_birth = input("Date of Birth (dd-mm-yyyy): ")
         hometown = input("Hometown: ")
         house_number = input("House Number: ")
         phone_number = input("Phone Number (024-400-0000): ")
@@ -218,7 +218,7 @@ def main() -> None:
                     validate_patient_phone_number(phone_number)
                     break
                 except ValueError as e:
-                    print(f"Error: {e}")
+                    print(f"\nError: {e}")
                     continue
             add_patient(
                 first_name=first_name,
