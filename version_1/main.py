@@ -23,7 +23,13 @@ def generate_patient_id() -> int:
 
 
 def calculate_age(date_of_birth: str) -> int:
-    pass
+    """
+    Calculate the age of a patient from their date of birth
+
+    :date_of_birth: str: The date of birth of the patient
+
+    :return: int: The age of the patient
+    """
 
 
 def display_main_menu() -> None:
