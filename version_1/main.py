@@ -22,6 +22,10 @@ def generate_patient_id() -> int:
     return len(PATIENTS_DATA) + 1 if PATIENTS_DATA else 1
 
 
+def calculate_age(date_of_birth: str) -> int:
+    pass
+
+
 def display_main_menu() -> None:
     """
     Display the main menu options
