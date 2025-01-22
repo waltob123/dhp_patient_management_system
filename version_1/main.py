@@ -10,7 +10,7 @@ It includes the main function to run the application and also other helper funct
 
 import re
 
-PATIENTS_DATA = []
+PATIENTS_DATA: list = []
 
 
 def generate_patient_id() -> int:
